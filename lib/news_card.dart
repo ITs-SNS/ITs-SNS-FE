@@ -37,6 +37,14 @@ class NewsCard extends StatelessWidget {
                 color: Colors.grey[800],
               ),
             ),
+            SizedBox(height: 10.0),
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 8.0,
+              children: news.chips,
+
+            ),
+
             SizedBox(height: 8.0),
             Align(
               alignment: Alignment.centerRight,
