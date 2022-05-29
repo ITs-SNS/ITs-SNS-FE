@@ -38,11 +38,19 @@ class NewsCard extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10.0),
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 8.0,
-              children: news.chips,
-
+            Container(
+              height: 60,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: news.chips.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    height: 50,
+                    padding: const EdgeInsets.all(5),
+                    child: news.chips[index]
+                  );
+                }
+              ),
             ),
 
             SizedBox(height: 8.0),
@@ -52,7 +60,7 @@ class NewsCard extends StatelessWidget {
                 onPressed: () {
                   launchChannel();
                 },
-                label: Text('see more'),
+                label: Text('더 보기'),
                 icon: Icon(Icons.add),
               ),
             ),
