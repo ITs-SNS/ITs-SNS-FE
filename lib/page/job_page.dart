@@ -105,6 +105,32 @@ class _JobPageState extends State<JobPage> {
     });
   }
 
+  void _openNewPage() {
+    Navigator.of(context).push(
+      new MaterialPageRoute(
+          builder: (BuildContext context) {
+            return Scaffold(
+              appBar: new AppBar(
+                title: new Text('채용 공고 키워드'),
+                centerTitle: true,
+                backgroundColor: Colors.indigo[800],
+              ),
+              body: new Center(
+                child:
+                SizedBox(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: Image(
+                    image: NetworkImage('http://192.168.35.250:5000/jobKeywords'),
+                  ),
+                ),
+              ),
+            );
+          }
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,6 +172,14 @@ class _JobPageState extends State<JobPage> {
           ),
         ],
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   heroTag: "btn2",
+      //   onPressed: _openNewPage,
+      //   child: const Icon(
+      //       Icons.local_fire_department,
+      //   ),
+      //   backgroundColor: Colors.indigo[800],
+      // ),
     );
   }
 }
