@@ -19,9 +19,9 @@ class NewsList extends StatefulWidget {
 class _NewsListState extends State<NewsList> {
   int _selectedIndex = 0;
   final tabs = [
-    newsPage,
+    NewsPage(),
     trendPage,
-    jobPage,
+    JobPage(),
   ];
 
   @override

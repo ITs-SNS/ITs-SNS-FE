@@ -33,18 +33,75 @@ List<News> newsList = [
     url: 'https://news.v.daum.net/v/20220509195115895',
     keywords: ['닥스콘', '초등학교', 'PDF', 'ICT', '디지털전자교재', '닥스콘', '초등학교', 'PDF', 'ICT', '디지털전자교재'],
   ),
+  News(
+    title: '2페이지',
+    contents: '이것은 2페이지다',
+    url: 'https://maple19out.tistory.com',
+    keywords: ['티스토리', 'maple19out', '세계 최고 해커'],
+  ),
 ];
 
+class NewsPage extends StatefulWidget {
+  const NewsPage({Key? key}) : super(key: key);
 
+  @override
+  State<NewsPage> createState() => _NewsPageState();
+}
 
-Widget newsPage = ListView.builder(
-  itemCount: newsList.length,
-  itemBuilder: (context, index) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
-      child: NewsCard(
-        news: newsList[index],
+class _NewsPageState extends State<NewsPage> {
+  int page = 1;
+  bool isLoading = false;
+
+  Future _loadData() async {
+    await new Future.delayed(new Duration(seconds: 2));
+    print("load more");
+    setState(() {
+      newsList.add(newsList[newsList.length - 1]);
+      isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body:
+      Column(
+        children: <Widget> [
+          Expanded(
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scrollInfo) {
+                if (!isLoading && scrollInfo.metrics.pixels ==
+                    scrollInfo.metrics.maxScrollExtent) {
+                  _loadData();
+                  // start loading data
+                  setState(() {
+                    isLoading = true;
+                  });
+                }
+                return true;
+              },
+              child: ListView.builder(
+                itemCount: newsList.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
+                    child: NewsCard(
+                      news: newsList[index],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          Container(
+            height: isLoading ? 50.0 : 0,
+            color: Colors.transparent,
+            child: Center(
+              child: new CircularProgressIndicator(),
+            ),
+          ),
+        ],
       ),
     );
-  },
-);
+  }
+}
