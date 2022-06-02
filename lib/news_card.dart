@@ -4,7 +4,8 @@ import 'news.dart';
 
 class NewsCard extends StatelessWidget {
   final News news;
-  NewsCard({ required this.news });
+
+  NewsCard({required this.news});
 
   void launchChannel() async {
     if (await canLaunch(news.url)) {
@@ -41,18 +42,15 @@ class NewsCard extends StatelessWidget {
             Container(
               height: 60,
               child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: news.chips.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    height: 50,
-                    padding: const EdgeInsets.all(5),
-                    child: news.chips[index]
-                  );
-                }
-              ),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: news.chips.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                        height: 50,
+                        padding: const EdgeInsets.all(5),
+                        child: news.chips[index]);
+                  }),
             ),
-
             SizedBox(height: 8.0),
             Align(
               alignment: Alignment.centerRight,
@@ -60,7 +58,7 @@ class NewsCard extends StatelessWidget {
                 onPressed: () {
                   launchChannel();
                 },
-                label: Text('더 보기'),
+                label: Text('see more'),
                 icon: Icon(Icons.add),
               ),
             ),
