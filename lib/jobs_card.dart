@@ -5,7 +5,7 @@ import 'jobs.dart';
 class JobsCard extends StatelessWidget {
   final Jobs jobs;
 
-  JobsCard({required this.jobs});
+  const JobsCard({required this.jobs});
 
   void launchChannel() async {
     if (await canLaunch(jobs.url)) {
@@ -16,7 +16,7 @@ class JobsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+      margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -24,22 +24,22 @@ class JobsCard extends StatelessWidget {
           children: <Widget>[
             Text(
               jobs.company,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 17.0,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 6.0),
+            const SizedBox(height: 6.0),
             Text(
               jobs.title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.blueGrey,
               ),
             ),
-            SizedBox(height: 6.0),
-            Container(
+            const SizedBox(height: 6.0),
+            SizedBox(
               height: 60,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -51,7 +51,7 @@ class JobsCard extends StatelessWidget {
                         child: jobs.chips[index]);
                   }),
             ),
-            SizedBox(height: 4.0),
+            const SizedBox(height: 4.0),
             Align(
               alignment: Alignment.centerRight,
               child: Text(
@@ -61,15 +61,15 @@ class JobsCard extends StatelessWidget {
                     jobs.deadline.split('T')[1],
               ),
             ),
-            SizedBox(height: 4.0),
+            const SizedBox(height: 4.0),
             Align(
               alignment: Alignment.centerRight,
               child: FlatButton.icon(
                 onPressed: () {
                   launchChannel();
                 },
-                label: Text('apply'),
-                icon: Icon(Icons.arrow_forward_sharp),
+                label: const Text('apply'),
+                icon: const Icon(Icons.arrow_forward_sharp),
               ),
             ),
           ],

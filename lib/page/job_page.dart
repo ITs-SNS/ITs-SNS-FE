@@ -38,7 +38,7 @@ class _JobPageState extends State<JobPage> {
       Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
       List<dynamic> tmpList = json['recruitList'];
       List<Jobs> JobListDTO = List.empty(growable: true);
-      print(tmpList.length);
+
       for (int i = 0; i < tmpList.length; i++) {
         List<dynamic> keywordJsonList = tmpList[i]['recruitKeywordList'];
         List<String> keywordList = List.empty(growable: true);
@@ -72,46 +72,55 @@ class _JobPageState extends State<JobPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollInfo) {
-                if (!isLoading &&
-                    scrollInfo.metrics.pixels ==
-                        scrollInfo.metrics.maxScrollExtent) {
-                  _loadData();
-                  // start loading data
-                  setState(() {
-                    isLoading = true;
-                  });
-                }
-                return true;
-              },
-              child: ListView.builder(
-                itemCount: jobsList.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 1.0, horizontal: 4.0),
-                    child: JobsCard(
-                      jobs: jobsList[index],
-                    ),
-                  );
+    if (widget.keyword != null && jobsList.length == 0) {
+      return const Scaffold(
+        body: Center(
+          child: Text(
+            'Keyword Recruit Information Not Found!',
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification scrollInfo) {
+                  if (!isLoading &&
+                      scrollInfo.metrics.pixels ==
+                          scrollInfo.metrics.maxScrollExtent) {
+                    _loadData();
+                    setState(() {
+                      isLoading = true;
+                    });
+                  }
+                  return true;
                 },
+                child: ListView.builder(
+                  itemCount: jobsList.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 1.0, horizontal: 4.0),
+                      child: JobsCard(
+                        jobs: jobsList[index],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          Container(
-            height: isLoading ? 50.0 : 0,
-            color: Colors.transparent,
-            child: Center(
-              child: new CircularProgressIndicator(),
+            Container(
+              height: isLoading ? 50.0 : 0,
+              color: Colors.transparent,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    }
   }
 }

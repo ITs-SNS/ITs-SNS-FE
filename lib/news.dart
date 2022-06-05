@@ -1,9 +1,24 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'main.dart';
 import './page/news_page.dart';
 import 'package:http/http.dart' as http;
 import 'server.dart';
+
+void _openKeywordNewsPage(String keyword) {
+  Navigator.of(navigatorKey.currentContext).push(
+    MaterialPageRoute(builder: (BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('#' + keyword + ' 키워드 뉴스'),
+          centerTitle: true,
+          backgroundColor: Colors.indigo[800],
+        ),
+        body: NewsPage(keyword: keyword),
+      );
+    }),
+  );
+}
 
 class News {
   String title;
@@ -22,34 +37,21 @@ class News {
     }
   }
 
-  TextEditingController _textFieldController = TextEditingController();
-
-  void _openNewPage(String keyword) {
-    Navigator.of(navigatorKey.currentContext).push(
-      MaterialPageRoute(builder: (BuildContext context) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text('#' + keyword + ' 키워드 뉴스'),
-            centerTitle: true,
-            backgroundColor: Colors.indigo[800],
-          ),
-          body: NewsPage(keyword: keyword),
-        );
-      }),
-    );
-  }
+  final TextEditingController _textFieldController = TextEditingController();
 
   _postRequest(String email, String keyword) async {
     String url = address + 'user_keyword';
 
-    http.Response response =
-        await http.post(Uri.parse(url), headers: <String, String>{
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }, body: <String, String>{
-      'user_email': email,
-      'user_keyword_content': keyword,
-      'user_keyword_type': 'news',
+    final msg = jsonEncode({
+      'userEmail': email,
+      'userKeywordContent': keyword,
+      'userKeywordType': 'news',
     });
+    http.Response response = await http.post(Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: msg);
   }
 
   void infoDialog(BuildContext context, String keyword, String email) {
@@ -63,14 +65,14 @@ class News {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           title: Column(
-            children: <Widget>[
+            children: const <Widget>[
               Text('Thank you!'),
             ],
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            children: const <Widget>[
               Text(
                 '구독 완료',
               ),
@@ -78,7 +80,7 @@ class News {
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text("확인"),
+              child: const Text("확인"),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -98,22 +100,22 @@ class News {
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          title: Text('Email 입력'),
+          title: const Text('Email 입력'),
           content: TextField(
             controller: _textFieldController,
             textInputAction: TextInputAction.go,
-            decoration: InputDecoration(hintText: "Enter your email"),
+            decoration: const InputDecoration(hintText: "Enter your email"),
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text('제출'),
+              child: const Text('제출'),
               onPressed: () {
                 Navigator.of(context).pop();
                 infoDialog(context, keyword, _textFieldController.text);
               },
             ),
             FlatButton(
-              child: Text('취소'),
+              child: const Text('취소'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -133,7 +135,7 @@ class News {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),
             title: Column(
-              children: <Widget>[
+              children: const <Widget>[
                 Text('Subscribe'),
               ],
             ),
@@ -148,14 +150,14 @@ class News {
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text("구독"),
+                child: const Text("구독"),
                 onPressed: () {
                   Navigator.pop(context);
                   emailDialog(context, keyword);
                 },
               ),
               FlatButton(
-                child: Text("취소"),
+                child: const Text("취소"),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -174,7 +176,7 @@ class News {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),
             title: Column(
-              children: <Widget>[
+              children: const <Widget>[
                 Text('Keywords News'),
               ],
             ),
@@ -189,14 +191,14 @@ class News {
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text("확인"),
+                child: const Text("확인"),
                 onPressed: () {
                   Navigator.pop(context);
-                  _openNewPage(keyword);
+                  _openKeywordNewsPage(keyword);
                 },
               ),
               FlatButton(
-                child: Text("취소"),
+                child: const Text("취소"),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -207,20 +209,18 @@ class News {
   }
 
   Widget _buildActionChip(String label) {
-    return Container(
-      child: GestureDetector(
-        onLongPress: () => subscribeDialog(label),
-        child: ActionChip(
-          avatar: CircleAvatar(
-            child: Text('#'),
-            backgroundColor: Colors.white.withOpacity(0.8),
-          ),
-          label: Text(label),
-          onPressed: () => showRelatedDialog(label),
-          labelStyle: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 12.0,
-          ),
+    return GestureDetector(
+      onLongPress: () => subscribeDialog(label),
+      child: ActionChip(
+        avatar: CircleAvatar(
+          child: const Text('#'),
+          backgroundColor: Colors.white.withOpacity(0.8),
+        ),
+        label: Text(label),
+        onPressed: () => showRelatedDialog(label),
+        labelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 12.0,
         ),
       ),
     );

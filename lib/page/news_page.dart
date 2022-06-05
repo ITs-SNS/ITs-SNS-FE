@@ -62,10 +62,6 @@ class _NewsPageState extends State<NewsPage> {
     }
   }
 
-  void setupPage() async {
-
-  }
-
   @override
   void initState() {
     super.initState();
@@ -74,46 +70,55 @@ class _NewsPageState extends State<NewsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollInfo) {
-                if (!isLoading &&
-                    scrollInfo.metrics.pixels ==
-                        scrollInfo.metrics.maxScrollExtent) {
-                  _loadData();
-                  // start loading data
-                  setState(() {
-                    isLoading = true;
-                  });
-                }
-                return true;
-              },
-              child: ListView.builder(
-                itemCount: newsList.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 1.0, horizontal: 4.0),
-                    child: NewsCard(
-                      news: newsList[index],
-                    ),
-                  );
+    if (widget.keyword != null && newsList.length == 0) {
+      return const Scaffold(
+        body: Center(
+          child: Text(
+            'Keyword News Not Found!',
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification scrollInfo) {
+                  if (!isLoading &&
+                      scrollInfo.metrics.pixels ==
+                          scrollInfo.metrics.maxScrollExtent) {
+                    _loadData();
+                    setState(() {
+                      isLoading = true;
+                    });
+                  }
+                  return true;
                 },
+                child: ListView.builder(
+                  itemCount: newsList.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 1.0, horizontal: 4.0),
+                      child: NewsCard(
+                        news: newsList[index],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          Container(
-            height: isLoading ? 50.0 : 0,
-            color: Colors.transparent,
-            child: Center(
-              child: CircularProgressIndicator(),
+            Container(
+              height: isLoading ? 50.0 : 0,
+              color: Colors.transparent,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    }
   }
 }

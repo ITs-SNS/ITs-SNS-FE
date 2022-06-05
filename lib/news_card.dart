@@ -16,7 +16,7 @@ class NewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+      margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -24,13 +24,13 @@ class NewsCard extends StatelessWidget {
           children: <Widget>[
             Text(
               news.title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 17.0,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 6.0),
+            const SizedBox(height: 6.0),
             Text(
               news.contents,
               style: TextStyle(
@@ -38,8 +38,8 @@ class NewsCard extends StatelessWidget {
                 color: Colors.grey[800],
               ),
             ),
-            SizedBox(height: 10.0),
-            Container(
+            const SizedBox(height: 10.0),
+            SizedBox(
               height: 60,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -51,15 +51,15 @@ class NewsCard extends StatelessWidget {
                         child: news.chips[index]);
                   }),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Align(
               alignment: Alignment.centerRight,
               child: FlatButton.icon(
                 onPressed: () {
                   launchChannel();
                 },
-                label: Text('see more'),
-                icon: Icon(Icons.add),
+                label: const Text('see more'),
+                icon: const Icon(Icons.add),
               ),
             ),
           ],

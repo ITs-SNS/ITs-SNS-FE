@@ -1,2 +1,4 @@
-String address = 'http://61.73.41.238:8080/';
-String address2 = 'http://192.168.35.96:5000/';
+// address for main server
+String address = 'http://14.39.239.174:8080/';
+// address for wordcloud server
+String address2 = 'http://3.39.11.121:5000/';
